@@ -40,7 +40,7 @@ export const signup = async (req, res) => {
       return res.status(400).json({ message: "invalid user data" });
     }
   } catch (error) {
-    console.log("error in sign up cpontroller", error.message);
+    console.log("error in sign up controller", error.message);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
@@ -91,12 +91,16 @@ export const updateProfile = async (req, res) => {
       return res.status(400).json({ message: "Profile Pic is required" });
     }
 
-    const uploadResponse = await cloudinary.uploader.upload(profilePic);
+    const uploadResponse = await cloudinary.uploader.upload(profilePic, {
+      resource_type: "image",
+    });
+
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       { profilePic: uploadResponse.secure_url },
       { new: true },
     ); //new true is given so that updated user has updated info not the one before..if new true is not given updated user will haev the old details before update.
+
     res.status(200).json(updatedUser);
   } catch (error) {
     console.log("error in update cpontroller", error.message);
@@ -104,11 +108,11 @@ export const updateProfile = async (req, res) => {
   }
 };
 
-export const checkAuth = (req,res) => {
-    try {
-        res.status(200).json(req.user)
-    } catch (error) {
-        console.log("error in checkauth cpontroller", error.message);
-        res.status(500).json({ message: "Internal Server Error" });
-    }
-}
+export const checkAuth = (req, res) => {
+  try {
+    res.status(200).json(req.user);
+  } catch (error) {
+    console.log("error in checkauth cpontroller", error.message);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
