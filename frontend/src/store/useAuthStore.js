@@ -1,0 +1,83 @@
+import { create } from "zustand";
+import { axiosInstance } from "../lib/axios";
+
+export const useAuthStore = create((set) => ({ //create() is used to create a global store.
+  authUser: null,
+  isSigningUp: false,
+  isLoggingIn: false,
+  isUpdatingProfile: false,
+  isCheckingAuth: true,
+  checkAuth: async () => { //Check if user already has valid login session/cookie/token.
+    try {
+      const res = await axiosInstance.get("/auth/check");
+
+      set({ authUser: res.data });
+    } catch (error) {
+        console.log("Error in check auth function",error);
+        
+        set({ authUser: null });
+    } finally { //Runs whether success or failure.
+      set({ isCheckingAuth: false });
+    }
+  },
+  signup: async (data) => {
+    set({isSigningUp : true})
+    try {
+      const res = await axiosInstance.post("/auth/signup",data)
+      set({authUser : res.data})
+      toast.success("Account created successfully")
+    } catch (error) {
+      toast.error(error.response.data.message)
+    } finally{
+      set({isSigningUp : false})
+    }
+  },
+  login : async(data) => {
+   set({isLoggingIn : true})
+   try {
+    const res = await axiosInstance.post("/auth/login",data)
+    set({authUser : res.data})
+    toast.success("Logged in successfully")
+   } catch (error) {
+      toast.error(error.response.data.message)
+    } finally{
+      set({isLoggingIn : false})
+    }
+  },
+  logout : async () => {
+    try {
+      await axiosInstance.post("/auth/logout")
+      set({authUser : null})
+      toast.success("Logged out successfully")
+    } catch (error) {
+      toast.error(error.response.data.message)
+    }
+  },
+  updateProfile : async (data) => {
+    
+  }
+}));
+// App opens
+//    ↓
+// checkAuth() runs when called in any component
+//    ↓
+// API checks token/cookie
+//    ↓
+// If valid → authUser stored
+// If invalid → authUser null
+//    ↓
+// isCheckingAuth = false
+
+//sign up function
+// User clicks signup
+//    ↓
+// App shows loading
+//    ↓
+// App sends data to server
+//    ↓
+// Server checks & creates account
+//    ↓
+// If success → login user
+// If fail → show error
+//    ↓
+// Stop loading
