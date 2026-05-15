@@ -42,7 +42,7 @@ const SignupPage = () => {
     if (success === true) signup(formData);
   };
   return (
-    <div className="overflow-hidden  grid md:grid-cols-2 bg-base-100 text-base-content">
+    <div className="h-screen overflow-hidden  grid md:grid-cols-2 bg-base-100 text-base-content">
       {/* left side */}
       <div className="flex flex-col  items-center p-3 bg-base-100">
         <div className="w-full max-w-md space-y-3">

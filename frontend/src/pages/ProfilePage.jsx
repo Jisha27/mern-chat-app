@@ -5,7 +5,7 @@ import { Camera } from "lucide-react";
 
 const ProfilePage = () => {
   const { authUser, isUpdatingProfile, updateProfile } = useAuthStore();
-  const [selectedImg,setSelectedImg] = useState(null)
+  const [selectedImg, setSelectedImg] = useState(null);
 
   const handleImageUpload = async (e) => {
     // Get selected file,e.target.files contains all selected files.,files = [photo.jpg]
@@ -35,62 +35,68 @@ const ProfilePage = () => {
     reader.onload = async () => {
       // converted image :const base64Image = reader.result...now it looks like :base64Image = "data:image/png;base64,abcd123..."
       const base64Image = reader.result;
-      setSelectedImg(base64Image)
-      
+      setSelectedImg(base64Image);
+
       // Send image to backend/store
       await updateProfile({ profilePic: base64Image });
     };
   };
-  
+
   return (
-    <div className="bg-base-100 max-w-3xl mx-auto flex flex-col items-center justify-center border border-primary/30 shadow-lg shadow-primary/10 rounded-3xl my-10 p-10 text-base-content">
-      <span className="text-2xl font-extrabold text-primary">Profile</span>
-      <p className="text-base-content/70">Your profile information</p>
-      {/* profile image */}
-      <div className="relative p-3">
-        <img
-          src={selectedImg || authUser?.profilePic || chatImg}
-          alt="Profile"
-          className="size-32 rounded-full object-cover"
-        />
-        <label
-          htmlFor="avatar-upload"
-          className={`absolute bottom-0 right-5 ${isUpdatingProfile ? "animate-pulse pointer-events-none" : ""}`}
-        >
-          <span className="bg-base-100 size-7 flex rounded-full flex-col items-center justify-center border border-primary">
-            <Camera className="w-5 h-5  text-primary" />
-          </span>
-          <input
-            id="avatar-upload"
-            type="file"
-            className="hidden"
-            accept="image/*"
-            onChange={handleImageUpload}
-            disabled={isUpdatingProfile}
+    <div className="h-[calc(100vh-700px)] bg-base-100 ">
+      <div className=" bg-base-100 max-w-3xl mx-auto flex flex-col items-center justify-center border border-primary/30 shadow-lg shadow-primary/10 rounded-3xl my-10 p-10 text-base-content">
+        <span className="text-2xl font-extrabold text-primary">Profile</span>
+        <p className="text-base-content/70">Your profile information</p>
+        {/* profile image */}
+        <div className="relative p-3">
+          <img
+            src={selectedImg || authUser?.profilePic || chatImg}
+            alt="Profile"
+            className="size-32 rounded-full object-cover"
           />
-        </label>
-      </div>
-      <p className="text-xs">{isUpdatingProfile ? 'Uploading...' : 'Click camera icon to update profile image'}</p>
-      {/* user details */}
-      <div className="w-[50%]">
-        <div className="form-control">
-          <label className="label">
-            <span className="label-text font-medium">Full Name</span>
-          </label>
-          <div className="flex border border-primary p-2 rounded-xl">
-            <span className="outline-none focus:outline-none bg-transparent w-full">
-              {authUser?.fullName}
+          <label
+            htmlFor="avatar-upload"
+            className={`absolute bottom-0 right-5 ${isUpdatingProfile ? "animate-pulse pointer-events-none" : ""}`}
+          >
+            <span className="bg-base-100 size-7 flex rounded-full flex-col items-center justify-center border border-primary">
+              <Camera className="w-5 h-5  text-primary" />
             </span>
-          </div>
+            <input
+              id="avatar-upload"
+              type="file"
+              className="hidden"
+              accept="image/*"
+              onChange={handleImageUpload}
+              disabled={isUpdatingProfile}
+            />
+          </label>
         </div>
-        <div className="form-control">
-          <label className="label">
-            <span className="label-text font-medium">Email</span>
-          </label>
-          <div className="flex border border-primary p-2 rounded-xl">
-            <span className="outline-none focus:outline-none bg-transparent w-full">
-              {authUser?.email}
-            </span>
+        <p className="text-xs">
+          {isUpdatingProfile
+            ? "Uploading..."
+            : "Click camera icon to update profile image"}
+        </p>
+        {/* user details */}
+        <div className="w-[50%]">
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text font-medium">Full Name</span>
+            </label>
+            <div className="flex border border-primary p-2 rounded-xl">
+              <span className="outline-none focus:outline-none bg-transparent w-full">
+                {authUser?.fullName}
+              </span>
+            </div>
+          </div>
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text font-medium">Email</span>
+            </label>
+            <div className="flex border border-primary p-2 rounded-xl">
+              <span className="outline-none focus:outline-none bg-transparent w-full">
+                {authUser?.email}
+              </span>
+            </div>
           </div>
         </div>
       </div>

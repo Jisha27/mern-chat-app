@@ -23,7 +23,7 @@ const LoginPage = () => {
     login(formData);
   };
   return (
-    <div className=" overflow-hidden  grid md:grid-cols-2 bg-base-100 text-base-content">
+    <div className="h-screen overflow-hidden  grid md:grid-cols-2 bg-base-100 text-base-content">
       {/* left side */}
       <div className="flex flex-col  items-center p-6 bg-base-100 sm:p-12">
         <div className="w-full max-w-md space-y-8">

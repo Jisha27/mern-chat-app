@@ -27,7 +27,7 @@ export default function App() {
   )
   
   return (
-    <div data-theme={theme}>
+    <div data-theme={theme} className='min-h-screen bg-base-100 text-base-content'>
     <Navbar/>
     <Routes>
       <Route path='/' element={authUser ? <HomePage/> : <Navigate to="/login"/>}/>
