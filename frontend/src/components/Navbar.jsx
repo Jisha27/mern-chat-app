@@ -26,29 +26,27 @@ const Navbar = () => {
 
         <div className="flex gap-5">
           <span className="flex gap-2 text-base-content">
-            <Settings className="size-4" />
-            <Link to="/settings" className="text-sm hidden md:block">
-              Settings
+            <Link to="/settings" className="flex gap-2 text-sm ">
+              <Settings className="size-4" />
+              <span className="hidden md:block">Setting</span>
             </Link>
           </span>
 
           {authUser && (
             <>
               <span className="flex gap-2 text-base-content">
-                <UserPen className="size-4" />
-                <Link to="/profile" className="text-sm hidden md:block">
-                  Profile
+                <Link to="/profile" className="flex gap-2 text-base-content">
+                  <UserPen className="size-4" />
+                  <span className="text-sm hidden md:block">Profile</span>
                 </Link>
               </span>
 
-              <span className="flex gap-2 text-base-content">
+              <span
+                onClick={logout}
+                className="flex gap-2 text-base-content cursor-pointer"
+              >
                 <LogOut className="size-4" />
-                <span
-                  onClick={logout}
-                  className="text-sm cursor-pointer hidden md:block"
-                >
-                  Logout
-                </span>
+                <span className="text-sm hidden md:block">Logout</span>
               </span>
             </>
           )}

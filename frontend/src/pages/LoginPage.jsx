@@ -92,7 +92,7 @@ const LoginPage = () => {
               className="btn btn-primary w-full p-3 rounded-xl  font-semiBold"
               disabled={isLoggingIn}
             >
-              {isLoggingIn ? "Loading..." : "Create Account"}
+              {isLoggingIn ? "Loading..." : "Login"}
             </button>
           </form>
           <div>

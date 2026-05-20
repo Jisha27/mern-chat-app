@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useChatStore } from "../store/useChatStore";
 import ChatHeader from "./ChatHeader";
 import MessageInput from "./MessageInput";
@@ -7,14 +7,24 @@ import chatImg from "../assets/chat2.jpg";
 import { formatMessageTime } from "../lib/utils";
 
 const ChatConatiner = () => {
-  const { messages, getMessages, isMessagesLoading, selectedUser } =
+  const { messages, getMessages, isMessagesLoading, selectedUser ,subscribeToMessages,unsubscribeFromMessages } =
     useChatStore();
   const { authUser } = useAuthStore();
+  const messageRef = useRef(null)
 
   useEffect(() => {
     getMessages(selectedUser._id);
-  }, [selectedUser._id, getMessages]);
+    subscribeToMessages()
+    return () => unsubscribeFromMessages()
+  }, [selectedUser._id, getMessages,subscribeToMessages,unsubscribeFromMessages]);
 
+//whenever there is new message scroll to latest message
+  useEffect(() => {
+   if(messageRef.current && messages){
+   messageRef.current.scrollIntoView({ behavior : "smooth"})
+
+   } 
+  },[messages])
   if (isMessagesLoading) return <span>Loading...</span>;
   return (
     //flex-1 means take all remaining width
@@ -27,6 +37,7 @@ const ChatConatiner = () => {
             <div
               key={message._id}
               className={`chat ${message.senderId === authUser._id ? "chat-end" : "chat-start"} `}
+              ref={messageRef}
             >
               <div className="chat-image avatar">
                 <div className="size-10 rounded-full border">
